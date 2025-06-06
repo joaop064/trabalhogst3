@@ -21,16 +21,14 @@ if ($result->num_rows !== 1 || !$result->fetch_assoc()['comprou_jogos']) {
 }
 ?>
 
-
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Jogo da Memória Eco - Sustentabilidade</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <style>
+ <style>
     :root {
       --primary-green: #4CAF50;
       --primary-green-dark: #388E3C;
@@ -252,168 +250,174 @@ if ($result->num_rows !== 1 || !$result->fetch_assoc()['comprou_jogos']) {
       .btn-recomecar-memory { font-size: 0.9rem; padding: 10px 18px; }
       .nav-login-btn {padding: 6px 12px; font-size: 0.85rem;}
     }
+    #curiosidade {
+  background-color: var(--light-green-accent);
+  color: var(--primary-green-dark);
+  font-style: italic;
+  font-size: 1.1rem;
+  padding: 12px 18px;
+  border-left: 4px solid var(--primary-green);
+  border-radius: var(--default-border-radius);
+  margin-top: 10px;
+  text-align: center;
+  box-shadow: var(--shadow-soft);
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  transition: opacity 0.3s ease;
+}
 
   </style>
 </head>
 <body>
 
-  
-
-  <div class="game-page-header-container">
-    <div class="game-top-bar">
-        <a href="ecogame.php" class="btn-voltar-game">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M10.8284 12.0007L15.7782 16.9504L14.364 18.3646L8 12.0007L14.364 5.63672L15.7782 7.05093L10.8284 12.0007Z"></path>
-            </svg>
-            Voltar para Jogos
-        </a>
-        <h1>Jogo da Memória Eco</h1>
-        <div class="game-header-placeholder"></div>
-    </div>
-    <div class="game-stats-container">
-        <div class="game-stat">Tentativas: <span id="tentativas-count">0</span></div>
-        <div class="game-stat">Pares Encontrados: <span id="pares-count">0</span> / <span id="total-pares">8</span></div>
-    </div>
+<div class="game-page-header-container">
+  <div class="game-top-bar">
+    <a href="ecogame.php" class="btn-voltar-game">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M10.8284 12.0007L15.7782 16.9504L14.364 18.3646L8 12.0007L14.364 5.63672L15.7782 7.05093L10.8284 12.0007Z"></path>
+      </svg>
+      Voltar para Jogos
+    </a>
+    <h1>Jogo da Memória Eco</h1>
+    <div class="game-header-placeholder"></div>
   </div>
-  
-  <div class="memory-game-app-container-wrapper">
-    <div class="memory-game-app-container">
-        <main>
-            <div class="memory-game-board-container">
-                <div id="memory-game-board">
-                    </div>
-                <div id="game-feedback-message" class="game-feedback-message"></div>
-            </div>
-            <button id="restartMemoryGameBtn" class="btn-recomecar-memory">Recomeçar Jogo</button>
-        </main>
-    </div>
+  <p id="curiosidade" style="text-align:center; font-style: italic; color: var(--primary-green-dark); margin-top: 5px;"></p>
+  <div class="game-stats-container">
+    <div class="game-stat">Tentativas: <span id="tentativas-count">0</span></div>
+    <div class="game-stat">Pares Encontrados: <span id="pares-count">0</span> / <span id="total-pares">8</span></div>
   </div>
+</div>
 
-  <script>
-    // Script do menu mobile
-    const mobileMenu = document.querySelector('.mobile-menu');
-    const navList = document.querySelector('.nav-list');
-    if (mobileMenu && navList) {
-        mobileMenu.addEventListener('click', () => {
-            navList.classList.toggle('active');
-            mobileMenu.classList.toggle('active');
-        });
-    }
+<div class="memory-game-app-container-wrapper">
+  <div class="memory-game-app-container">
+    <main>
+      <div class="memory-game-board-container">
+        <div id="memory-game-board"></div>
+        <div id="game-feedback-message" class="game-feedback-message"></div>
+      </div>
+      <button id="restartMemoryGameBtn" class="btn-recomecar-memory">Recomeçar Jogo</button>
+    </main>
+  </div>
+</div>
 
-    // Script do Jogo da Memória
-    const gameBoard = document.getElementById('memory-game-board');
-    const tentativasCountEl = document.getElementById('tentativas-count');
-    const paresCountEl = document.getElementById('pares-count');
-    const totalParesEl = document.getElementById('total-pares');
-    const restartBtn = document.getElementById('restartMemoryGameBtn');
-    const feedbackMessageEl = document.getElementById('game-feedback-message');
+<script>
+const gameBoard = document.getElementById('memory-game-board');
+const tentativasCountEl = document.getElementById('tentativas-count');
+const paresCountEl = document.getElementById('pares-count');
+const totalParesEl = document.getElementById('total-pares');
+const restartBtn = document.getElementById('restartMemoryGameBtn');
+const feedbackMessageEl = document.getElementById('game-feedback-message');
+const curiosidadeEl = document.getElementById('curiosidade');
 
-    const cardValues = ['♻️', '🌳', '💧', '☀️', '💨', '🚲', '🥕', '🌍'];
-    let cards = [];
-    let flippedCards = [];
-    let matchedPairs = 0;
-    let attempts = 0;
-    let lockBoard = false;
-    const totalPairs = cardValues.length;
+const cardValues = ['♻️', '🌳', '💧', '☀️', '💨', '🚲', '🥕', '🌍'];
+let cards = [];
+let flippedCards = [];
+let matchedPairs = 0;
+let attempts = 0;
+let lockBoard = false;
+const totalPairs = cardValues.length;
+totalParesEl.textContent = totalPairs;
 
-    function shuffle(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-        }
-        return array;
-    }
+const curiosidades = {
+  '♻️': 'A reciclagem ajuda a preservar recursos naturais e economizar energia.',
+  '🌳': 'As árvores produzem oxigênio e ajudam a combater as mudanças climáticas.',
+  '💧': 'Água é essencial para a vida e deve ser usada de forma consciente.',
+  '☀️': 'A energia solar é limpa e renovável, reduzindo a emissão de gases poluentes.',
+  '💨': 'O vento é uma fonte de energia renovável que não polui o meio ambiente.',
+  '🚲': 'Andar de bicicleta ajuda a reduzir a poluição e melhora a saúde.',
+  '🥕': 'Consumir alimentos orgânicos é melhor para o solo e para a saúde.',
+  '🌍': 'Preservar o planeta é essencial para garantir um futuro sustentável para todos.',
+};
 
-    function createBoard() {
-        gameBoard.innerHTML = ''; // Limpa o tabuleiro anterior
-        feedbackMessageEl.textContent = '';
-        cards = [];
-        const gameCardsData = shuffle([...cardValues, ...cardValues]); // Duplica e embaralha
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
 
-        gameCardsData.forEach(value => {
-            const cardElement = document.createElement('div');
-            cardElement.classList.add('memory-card');
-            cardElement.dataset.value = value;
+function createBoard() {
+  gameBoard.innerHTML = '';
+  feedbackMessageEl.textContent = '';
+  curiosidadeEl.textContent = '';
+  flippedCards = [];
+  matchedPairs = 0;
+  attempts = 0;
+  tentativasCountEl.textContent = '0';
+  paresCountEl.textContent = '0';
+  lockBoard = false;
+  
+  const gameCardsData = shuffle([...cardValues, ...cardValues]);
 
-            const cardFaceFront = document.createElement('div');
-            cardFaceFront.classList.add('card-face', 'card-front');
-            cardFaceFront.textContent = value;
+  gameCardsData.forEach(value => {
+    const cardElement = document.createElement('div');
+    cardElement.classList.add('memory-card');
+    cardElement.dataset.value = value;
 
-            const cardFaceBack = document.createElement('div');
-            cardFaceBack.classList.add('card-face', 'card-back');
-            // cardFaceBack.textContent = '?'; // Ou um ícone
+    const cardFaceFront = document.createElement('div');
+    cardFaceFront.classList.add('card-face', 'card-front');
+    cardFaceFront.textContent = value;
 
-            cardElement.appendChild(cardFaceFront);
-            cardElement.appendChild(cardFaceBack);
-            
-            cardElement.addEventListener('click', handleCardClick);
-            cards.push(cardElement);
-            gameBoard.appendChild(cardElement);
-        });
-    }
+    const cardFaceBack = document.createElement('div');
+    cardFaceBack.classList.add('card-face', 'card-back');
 
-    function handleCardClick(event) {
-        if (lockBoard) return;
-        const clickedCard = event.currentTarget;
-        if (clickedCard === flippedCards[0] || clickedCard.classList.contains('matched')) return;
+    cardElement.appendChild(cardFaceFront);
+    cardElement.appendChild(cardFaceBack);
+    
+    cardElement.addEventListener('click', handleCardClick);
+    cards.push(cardElement);
+    gameBoard.appendChild(cardElement);
+  });
+}
 
-        clickedCard.classList.add('flipped');
-        flippedCards.push(clickedCard);
+function handleCardClick(event) {
+  if (lockBoard) return;
+  const clickedCard = event.currentTarget;
+  if (clickedCard === flippedCards[0] || clickedCard.classList.contains('matched')) return;
 
-        if (flippedCards.length === 2) {
-            lockBoard = true;
-            attempts++;
-            tentativasCountEl.textContent = attempts;
-            checkForMatch();
-        }
-    }
+  clickedCard.classList.add('flipped');
+  flippedCards.push(clickedCard);
 
-    function checkForMatch() {
-        const [card1, card2] = flippedCards;
-        if (card1.dataset.value === card2.dataset.value) {
-            matchedPairs++;
-            paresCountEl.textContent = matchedPairs;
-            card1.classList.add('matched');
-            card2.classList.add('matched');
-            card1.removeEventListener('click', handleCardClick); // Opcional, pois .matched já previne
-            card2.removeEventListener('click', handleCardClick);
-            // Aumenta o tempo de exibição das cartas ao acertar (1.5s)
-            setTimeout(() => {
-                resetFlippedCards();
-                if (matchedPairs === totalPairs) {
-                    feedbackMessageEl.textContent = `Parabéns! Você encontrou todos os ${totalPairs} pares em ${attempts} tentativas! 🎉`;
-                }
-            }, 2000);
-        } else {
-            setTimeout(() => {
-                card1.classList.remove('flipped');
-                card2.classList.remove('flipped');
-                resetFlippedCards();
-            }, 700); // Tempo para ver as cartas antes de desvirar (erro)
-        }
-    }
+  if (flippedCards.length === 2) {
+    lockBoard = true;
+    attempts++;
+    tentativasCountEl.textContent = attempts;
+    checkForMatch();
+  }
+}
 
-    function resetFlippedCards() {
-        flippedCards = [];
-        lockBoard = false;
-    }
+function checkForMatch() {
+  const [card1, card2] = flippedCards;
+  if (card1.dataset.value === card2.dataset.value) {
+    matchedPairs++;
+    paresCountEl.textContent = matchedPairs;
+    card1.classList.add('matched');
+    card2.classList.add('matched');
+    card1.removeEventListener('click', handleCardClick);
+    card2.removeEventListener('click', handleCardClick);
 
-    function startGame() {
-        matchedPairs = 0;
-        attempts = 0;
-        flippedCards = [];
-        lockBoard = false;
-        tentativasCountEl.textContent = attempts;
-        paresCountEl.textContent = matchedPairs;
-        totalParesEl.textContent = totalPairs;
-        createBoard();
-    }
+    // Exibe a curiosidade relacionada
+    curiosidadeEl.textContent = curiosidades[card1.dataset.value] || '';
 
-    restartBtn.addEventListener('click', startGame);
+    flippedCards = [];
+    lockBoard = false;
+  } else {
+    setTimeout(() => {
+      card1.classList.remove('flipped');
+      card2.classList.remove('flipped');
+      flippedCards = [];
+      lockBoard = false;
+    }, 1000);
+  }
+}
 
-    // Iniciar o jogo pela primeira vez
-    startGame();
+restartBtn.addEventListener('click', () => {
+  createBoard();
+});
 
-  </script>
+createBoard();
+</script>
 </body>
 </html>
